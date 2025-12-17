@@ -8,12 +8,12 @@ class VlmReq:
     def __init__(
             self,
             image:Image,
-            vlm_api="http://localhost:1234/v1/chat/completions",
-            vlm_model="google/gemma-3-12b"
+            vlm_api="",
+            vlm_model=""
         ):
         self.image = image
-        self.api = vlm_api
-        self.model = vlm_model
+        self.vlm_api = vlm_api
+        self.vlm_model = vlm_model
     def pil_to_base64(self,img:Image, fmt: str = "PNG") -> str:
         if isinstance(img, np.ndarray):
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -29,6 +29,8 @@ class VlmReq:
         # 转为base64并解码为utf-8字符串
         return base64.b64encode(file_data).decode("utf-8")
     def request(self):
+        if self.vlm_api == "" or self.vlm_model == "":
+            return ""
         # 将输入图片转为base64格式
         base64_str = self.pil_to_base64(self.image)
         # print("base64_str",base64_str)
@@ -54,6 +56,6 @@ class VlmReq:
             }],
         }
         headers = {"Content-Type": "application/json"}
-        response = requests.post(self.api, json=payload, headers=headers)
+        response = requests.post(self.vlm_api, json=payload, headers=headers)
         # 打印识别的文字
         return response.json()["choices"][0]["message"]["content"]

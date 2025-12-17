@@ -76,8 +76,8 @@ class Det:
     def __init__(
             self,
             image:Image,
-            model_path="models/PP-OCRv5_server_det/inference.onnx",
-            providers=['DmlExecutionProvider', 'CPUExecutionProvider'],
+            model_path="onnx_static/PP-OCRv5_server_det_infer/inference.onnx",
+            providers=['DmlExecutionProvider'],
             debug=False
         ):
         self.image = image
@@ -149,7 +149,10 @@ class Det:
         resized_img, (ratio_h, ratio_w) = self.resize_norm_img(img)
         input_tensor = resized_img.transpose(2,0,1)[np.newaxis, :]  # NCHW
         # 执行推理
-        session = ort.InferenceSession(self.model_path, providers=self.providers)
+        session = ort.InferenceSession(
+            self.model_path, 
+            providers=self.providers,
+        )
         outputs = session.run(None, {session.get_inputs()[0].name: input_tensor})
         pred = outputs[0]  
 

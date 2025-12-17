@@ -10,15 +10,16 @@ class Rec:
     def __init__(
         self,
         image:ndarray,
-        model_dir="models/PP-OCRv5_server_rec",
-        providers=['DmlExecutionProvider', 'CPUExecutionProvider'],
+        model_path="onnx_static/PP-OCRv5_server_rec_infer/inference.onnx",
+        model_conf_path = "onnx_static/PP-OCRv5_server_rec_infer/inference.yml",
+        providers=['DmlExecutionProvider'],
         debug=False
     ):
         self.image = image 
-        self.model_path = os.path.join(model_dir, "inference.onnx")
+        self.model_path = model_path
         self.providers = providers
         self.debug = debug
-        self.model_conf_path = os.path.join(model_dir, "inference.yml")
+        self.model_conf_path = model_conf_path
         # 获取类别定义
         with open(self.model_conf_path, "r", encoding="utf-8") as f:
             model_conf = yaml.safe_load(f)
@@ -74,7 +75,7 @@ class Rec:
         # 加载字典
         # char_list = [' '] + self.load_dict('ppocrv5_dict.txt')
         # 加载模型
-        session = ort.InferenceSession(self.model_path)
+        session = ort.InferenceSession(self.model_path,providers=self.providers)
         rec_input_name = session.get_inputs()[0].name
         # 尺寸缩放
         rec_input = self.resize_rec_img(self.image)

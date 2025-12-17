@@ -8,12 +8,15 @@ class OnnxStructure:
         self,
         pdf_path="",
         debug=False,
-        providers=['DmlExecutionProvider', 'CPUExecutionProvider']
+        providers=['DmlExecutionProvider'],
+        vlm_api="",
+        vlm_model=""
     ):
         self.debug = debug
         self.pdf_path =  pdf_path
         self.providers = providers
-    
+        self.vlm_api = vlm_api
+        self.vlm_model = vlm_model
     # 预测结果
     # page 所在页码
     # content_type: 类型
@@ -31,7 +34,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "文書タイトル",
+                    "content_type": "doc_title",
                     "content": res,
                 })
             # 段落标题
@@ -40,7 +43,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "セクションタイトル",
+                    "content_type": "paragraph_title",
                     "content": res
                 })
             # 文本
@@ -49,7 +52,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "文章",
+                    "content_type": "text",
                     "content": res
                 })
             # 摘要
@@ -58,7 +61,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "まとめ",
+                    "content_type": "abstract",
                     "content": res
                 })
             # 目录
@@ -67,7 +70,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "目次",
+                    "content_type": "content",
                     "content": res
                 })
             # 图/表标题
@@ -76,7 +79,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "図/表のタイトル",
+                    "content_type": "figure_title",
                     "content": res
                 })
             # 参考文献
@@ -85,7 +88,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "参考文献",
+                    "content_type": "reference",
                     "content": res
                 })
             # 脚注
@@ -94,7 +97,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "脚注",
+                    "content_type": "footnote",
                     "content": res
                 })
             # 页眉
@@ -103,7 +106,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "ヘッダ",
+                    "content_type": "header",
                     "content": res
                 })
             # 页脚
@@ -112,7 +115,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "フッター",
+                    "content_type": "footer",
                     "content": res
                 })
             # 侧栏文本
@@ -121,7 +124,7 @@ class OnnxStructure:
                 res = det.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "サイドバーテキスト",
+                    "content_type": "aside_text",
                     "content": res
                 })
             # 参考文献内容
@@ -139,43 +142,43 @@ class OnnxStructure:
                 res = tableRec.predict()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "文章",
+                    "content_type": "table",
                     "content": res
                 })
             # 图片
             elif layout_result["label"] == "image":
-                req = VlmReq(image=layout_result["image"])
+                req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "写真",
+                    "content_type": "image",
                     "content": res
                 })
             # 印章
             elif layout_result["label"] == "seal":
-                req = VlmReq(image=layout_result["image"])
+                req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "シール",
+                    "content_type": "seal",
                     "content": res
                 })
             # 公式
             elif layout_result["label"] == "formula":
-                req = VlmReq(image=layout_result["image"])
+                req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "式",
+                    "content_type": "formula",
                     "content": res
                 })
             # 图表
             elif layout_result["label"] == "chart":
-                req = VlmReq(image=layout_result["image"])
+                req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
                 pipelineResult.append({
                     "page": layout_result["page"],
-                    "content_type": "チャート",
+                    "content_type": "chart",
                     "content": res
                 })
             # 算法

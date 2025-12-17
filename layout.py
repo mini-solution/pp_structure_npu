@@ -35,14 +35,15 @@ label_list = [
 class Layout:
     def __init__(self,
             pdf_path,
-            model_dir='models/PP-DocLayout_plus-L',
+            model_path='onnx_static/PP-DocLayout_plus-L_infer/inference.onnx',
+            model_conf_path='onnx_static/PP-DocLayout_plus-L_infer/inference.yml',
             debug=False,
             output='output',
-            providers=['DmlExecutionProvider', 'CPUExecutionProvider']
+            providers=['DmlExecutionProvider']
         ):
         self.pdf_file = pdf_path
-        self.model_path = os.path.join(model_dir, "inference.onnx")
-        self.model_conf_path = os.path.join(model_dir, "inference.yml")
+        self.model_path = model_path
+        self.model_conf_path = model_conf_path
         self.debug = debug
         self.output = output
         self.providers = providers
@@ -125,7 +126,10 @@ class Layout:
     def predict(self):
         # pdf转为图片
         images = convert_from_path(self.pdf_file, dpi=300)
-        session = ort.InferenceSession(self.model_path, providers=self.providers)
+        session = ort.InferenceSession(
+            self.model_path, 
+            providers=self.providers
+        )
         layout_results = []
         for page, img in enumerate(images):
             img = np.array(img)

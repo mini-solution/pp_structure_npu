@@ -12,10 +12,10 @@ class TableStructRec:
     def __init__(
         self,
         image: Image,
-        model_dir="models/SLANet",
+        model_dir="onnx_static/SLANet_infer",
         debug=False,
         output="output",
-        providers=["DmlExecutionProvider", "CPUExecutionProvider"],
+        providers=["DmlExecutionProvider"],
     ):
         self.image = image
         self.model_path = os.path.join(model_dir, "inference.onnx")
@@ -62,7 +62,10 @@ class TableStructRec:
     def predict(self):
         img = np.array(self.image)
         input_tensor = self.pre_process(img)
-        session = ort.InferenceSession(self.model_path, providers=self.providers)
+        session = ort.InferenceSession(
+            self.model_path, 
+            providers=self.providers
+        )
         output = session.run(None, {session.get_inputs()[0].name: input_tensor})
         np.set_printoptions(threshold=np.inf)
         return self.parse_output(output)
@@ -72,10 +75,10 @@ class TableCls:
     def __init__(
         self,
         image: Image,
-        model_dir="models/PP-LCNet_x1_0_table_cls",
+        model_dir="onnx_static/PP-LCNet_x1_0_table_cls_infer",
         debug=False,
         output="output",
-        providers=["DmlExecutionProvider", "CPUExecutionProvider"],
+        providers=["DmlExecutionProvider"],
     ):
         self.image = image
         self.model_path = os.path.join(model_dir, "inference.onnx")
@@ -107,7 +110,10 @@ class TableCls:
     def predict(self):
         img = np.array(self.image)
         input_tensor = self.pre_process(img)
-        session = ort.InferenceSession(self.model_path, providers=self.providers)
+        session = ort.InferenceSession(
+            self.model_path, 
+            providers=self.providers        
+        )
         output = session.run(None, {session.get_inputs()[0].name: input_tensor})
         return self.parse_output(output)
 
@@ -117,10 +123,10 @@ class TableDet:
     def __init__(
         self,
         image: Image,
-        model_dir="models/RT-DETR-L_wired_table_cell_det",
+        model_dir="onnx_static/RT-DETR-L_wired_table_cell_det_infer",
         debug=False,
         output="output/table_cell_wired",
-        providers=["DmlExecutionProvider", "CPUExecutionProvider"],
+        providers=["DmlExecutionProvider"],
     ):
         self.image = image
         self.model_path = os.path.join(model_dir, "inference.onnx")
@@ -197,7 +203,10 @@ class TableDet:
         src_h, src_w = img.shape[:2]
         # input_tensor,scale,(new_w, new_h) = self.pre_process(img)
         input_tensor = self.pre_process(img)
-        session = ort.InferenceSession(self.model_path, providers=self.providers)
+        session = ort.InferenceSession(
+            self.model_path, 
+            providers=self.providers  
+        )
         output = session.run(
             None, 
             {
@@ -228,7 +237,7 @@ class TableRec:
         image: Image,
         debug=False,
         output="output",
-        providers=["DmlExecutionProvider", "CPUExecutionProvider"],
+        providers=["DmlExecutionProvider"],
     ):
         self.image = image
         self.debug = debug
@@ -244,10 +253,10 @@ class TableRec:
         tableCls = tableCls.predict()
         cell_res = []
         if tableCls == "wired_table":
-            tableWiredDet = TableDet(image=self.image)
+            tableWiredDet = TableDet(image=self.image,providers=self.providers)
             cell_res = tableWiredDet.predict()
         else:
-            tableWirelessDet = TableDet(image=self.image,model_dir="models/RT-DETR-L_wireless_table_cell_det")
+            tableWirelessDet = TableDet(image=self.image,model_dir="onnx_static/RT-DETR-L_wireless_table_cell_det_infer",providers=self.providers)
             cell_res = tableWirelessDet.predict()
         tdIndex = 0
         for label in structLabels:

@@ -3,3 +3,5 @@ __pycache__
 output
 models
 test
+quantized_info.csv
+onnx_static

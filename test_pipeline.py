@@ -1,15 +1,14 @@
-import cv2
-import onnx
+import json
 from pipeline import OnnxStructure
-from onnx import shape_inference
 
+# json格式化
+def format_json(data, indent=4, ensure_ascii=False):
+    return json.dumps(data, indent=indent, ensure_ascii=ensure_ascii)
+
+# 解析pdf
 pipeline = OnnxStructure(pdf_path="gin.pdf")
 res = pipeline.predict()
-print(res)
-# model = onnx.load("models/PP-OCRv5_server_rec/inference.onnx")
-# model = shape_inference.infer_shapes(model)
-# onnx.save(model, "model_shape.onnx")
-# for node in model.graph.node:
-#     if node.op_type == "MaxPool":
-#         for attr in node.attribute:
-#             print(attr)
+# 格式化结果
+json_res = format_json(res)
+# 打印结果
+print(json_res)
