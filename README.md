@@ -7,6 +7,8 @@ paddleocr with amd gpu/npu
   conda create -n paddleocr python=3.12
   ```
 #### 2.下载最新release文件包
+[release下载](https://github.com/mini-solution/pp_structure_npu/releases)
+
 #### 3.安装依赖
   ```bash
   pip install -r requirement.txt
