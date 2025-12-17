@@ -12,41 +12,41 @@ paddleocr with amd gpu/npu
   ```
 # 如何使用
   #### 参考test_pipeline.py
-    ```python
-        from pipeline import OnnxStructure
-        # 解析pdf
-        pipeline = OnnxStructure(pdf_path="gin.pdf")
-        # 预测结果，输出为对象
-        res = pipeline.predict()
+  ```python
+  from pipeline import OnnxStructure
+  # 解析pdf
+  pipeline = OnnxStructure(pdf_path="gin.pdf")
+  # 预测结果，输出为对象
+  res = pipeline.predict()
 
-        # 参考 test_pipeline.py,结果输出举例
-        # [{
-        #    "page": 0,
-        #    "content_type": "doc_title",
-        #    "content": "GinWebFramework"
-        # }]
+  # 参考 test_pipeline.py,结果输出举例
+  # [{
+  #    "page": 0,
+  #    "content_type": "doc_title",
+  #    "content": "GinWebFramework"
+  # }]
 
 
-        # OnnxStructure 主要构造函数说明
-        # 参数
-        # pdf_path pdf文件
-        # vlm_api LMStudio接口，为了调用视觉模型接口，实现图片类摘要获取。默认为空
-        # vlm_model LMStudio使用的模型。默认为空
-    ```
+  # OnnxStructure 主要构造函数说明
+  # 参数
+  # pdf_path pdf文件
+  # vlm_api LMStudio接口，为了调用视觉模型接口，实现图片类摘要获取。默认为空
+  # vlm_model LMStudio使用的模型。默认为空
+  ```
 
  #### 结果输出
-    ```json
-    [{
-        "page": 0,
-        "content_type": "doc_title",
-        "content": "GinWebFramework"
-    },
-    {
-        "page": 0,
-        "content_type": "text",
-        "content": "Go言語のためのフル機能の最速Webフレームワーク。水晶のようにすっきり。"
-    }]
-    ```
+  ```json
+  [{
+      "page": 0,
+      "content_type": "doc_title",
+      "content": "GinWebFramework"
+  },
+  {
+      "page": 0,
+      "content_type": "text",
+      "content": "Go言語のためのフル機能の最速Webフレームワーク。水晶のようにすっきり。"
+  }]
+  ```
 #### 输出字段说明
    - page 所在页码，从0开始
    - content_type 类型(参考类型枚举)
