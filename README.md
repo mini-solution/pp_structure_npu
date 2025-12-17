@@ -2,12 +2,12 @@
 paddleocr with amd gpu/npu
 
 # 如何安装
-#### 创建环境
+#### 1.创建环境
   ```bash
   conda create -n paddleocr python=3.12
   ```
-#### 下载最新release文件包
-#### 安装依赖
+#### 2.下载最新release文件包
+#### 3.安装依赖
   ```bash
   pip install -r requirement.txt
   ```
