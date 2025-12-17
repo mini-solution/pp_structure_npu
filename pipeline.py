@@ -150,7 +150,7 @@ class OnnxStructure:
                 req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
                 if res == "":
-                    break
+                    continue
                 pipelineResult.append({
                     "page": layout_result["page"],
                     "content_type": "image",
@@ -161,7 +161,7 @@ class OnnxStructure:
                 req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
                 if res == "":
-                    break
+                    continue
                 pipelineResult.append({
                     "page": layout_result["page"],
                     "content_type": "seal",
@@ -172,7 +172,7 @@ class OnnxStructure:
                 req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
                 if res == "":
-                    break
+                    continue
                 pipelineResult.append({
                     "page": layout_result["page"],
                     "content_type": "formula",
@@ -183,7 +183,7 @@ class OnnxStructure:
                 req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
                 if res == "":
-                    break
+                    continue
                 pipelineResult.append({
                     "page": layout_result["page"],
                     "content_type": "chart",
