@@ -149,6 +149,8 @@ class OnnxStructure:
             elif layout_result["label"] == "image":
                 req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
+                if res == "":
+                    break
                 pipelineResult.append({
                     "page": layout_result["page"],
                     "content_type": "image",
@@ -158,6 +160,8 @@ class OnnxStructure:
             elif layout_result["label"] == "seal":
                 req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
+                if res == "":
+                    break
                 pipelineResult.append({
                     "page": layout_result["page"],
                     "content_type": "seal",
@@ -167,6 +171,8 @@ class OnnxStructure:
             elif layout_result["label"] == "formula":
                 req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
+                if res == "":
+                    break
                 pipelineResult.append({
                     "page": layout_result["page"],
                     "content_type": "formula",
@@ -176,6 +182,8 @@ class OnnxStructure:
             elif layout_result["label"] == "chart":
                 req = VlmReq(image=layout_result["image"],vlm_api=self.vlm_api,vlm_model=self.vlm_model)
                 res = req.request()
+                if res == "":
+                    break
                 pipelineResult.append({
                     "page": layout_result["page"],
                     "content_type": "chart",
